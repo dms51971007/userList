@@ -7,6 +7,7 @@ import com.javarush.spring.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Repository
@@ -53,13 +54,18 @@ public class UserDAOImpl implements UserDAO {
     }
 
 
+    @SuppressWarnings("unchecked")
     @Override
+    @Transactional
     public User getUserById(int id) {
         Session session = this.sessionFactory.getCurrentSession();
-        User p = (User) session.load(User.class, new Integer(id));
+
+        User p = (User) session.get(User.class, new Integer(id));
+//        System.out.print(p);
         return p;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void removeUser(int id) {
         Session session = this.sessionFactory.getCurrentSession();
